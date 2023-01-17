@@ -16,6 +16,7 @@ public class ServidorTCP {
             for (int i=2; i<=num/2; i++) {
                 if(num % i == 0) {
                     esPrimo=false;
+                    break;
                 }
             }
         }
@@ -23,8 +24,6 @@ public class ServidorTCP {
     }
 
     public static void main(String[] args) {
-
-        boolean positivo=false;
 
         try {
             // 1 - Crear socket de tipo servidor y le indicamos el puerto
