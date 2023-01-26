@@ -1,4 +1,4 @@
-package ejercicio1;
+package lecturaremotadeficheros;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -7,21 +7,9 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class ClienteTCP {
-
-    static boolean esPositivo(int num) {
-        boolean esPositivo=true;
-
-        if(num < 0) {
-            esPositivo=false;
-        }
-
-        return esPositivo;
-    }
+    private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-
-        Scanner sc=new Scanner(System.in);
-
         try {
             // 1 - Crear un socket de tipo cliente indicando IP y puerto del servidor
             System.out.println("Estableciendo conexión con el servidor");
@@ -40,19 +28,16 @@ public class ClienteTCP {
             InputStreamReader isr = new InputStreamReader(is, "UTF-8");
             BufferedReader br = new BufferedReader(isr);
 
-            System.out.println("El servidor te pide un numero positivo: ");
+            System.out.println("El servidor te pide la ruta del archivo: ");
 
-            int num=sc.nextInt();
-            while(!esPositivo(num)) {
-                System.out.println("El numero no es positivo");
-                num= sc.nextInt();
-            }
-            bw.write(num);
+            String ruta=sc.next();
+
+            bw.write(ruta);
             bw.newLine();
             bw.flush();
 
 
-            System.out.println("El servidor me envia el mensajer: "+br.readLine());
+            System.out.println("El servidor me envia el mensajer: " + br.readLine());
 
             // 4 - Cerrar flujos de lectura y escritura
             bw.close();
@@ -66,14 +51,13 @@ public class ClienteTCP {
             System.out.println("Se cierra la conexión del cliente");
             cliente.close();
 
-        } catch (UnknownHostException e) {
+        } catch(UnknownHostException e){
             System.err.println("No se encuentra el host especificado.");
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch(IOException e){
             System.err.println("Se ha producido un error en la conexión con el servidor.");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
-
 }

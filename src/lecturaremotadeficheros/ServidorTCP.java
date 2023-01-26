@@ -1,26 +1,38 @@
-package ejercicio1;
+package lecturaremotadeficheros;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class ServidorTCP {
 
-    static boolean esPrimo(int num) {
-        //Creamos un variables que nos dira si el numero es primo o no
-        boolean esPrimo = true;
+    public static void leerFichero(String ruta, Socket peticion) {
+        BufferedWriter bw=null;
+        String linea="";
 
-        if (num==0 || num==1) {
-            esPrimo=false;
-        } else {
-            for (int i=2; i<=num/2; i++) {
-                if(num % i == 0) {
-                    esPrimo=false;
-                    break;
-                }
+        try {
+            OutputStream os = peticion.getOutputStream();
+            OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
+            bw = new BufferedWriter(osw);
+            File archivo=new File(ruta);
+            FileReader fr = new FileReader(archivo);
+            BufferedReader brr=new BufferedReader(fr);
+
+            while(linea!=null) {
+                linea= brr.readLine();
+                bw.write(linea);
+                bw.newLine();
+                bw.flush();
             }
+        } catch (FileNotFoundException e) {
+            bw.write("El archivo no se encuentra.");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return esPrimo;
+
     }
 
     public static void main(String[] args) {
@@ -46,32 +58,15 @@ public class ServidorTCP {
                 BufferedWriter bw = new BufferedWriter(osw);
 
                 //Guardo el numero enviado en una variable
-                int numEnviado=br.read();
+                String ruta=br.readLine();
 
                 //Mostramos el numero enviado por el cliente
-                System.out.println("Mensaje enviado por el cliente: " + numEnviado);
-
-                //Creamos una variable para saber si es primo o no llamando a la funcion esPrimo
-                boolean primo=esPrimo(numEnviado);
-
-                //Si la variable es es true
-                if (primo){
-                    //Enviamos que es un numero primo
-                    System.out.println("El servidor le envía la respuesta al cliente");
-                    bw.write("Es un numero primo");
-                    bw.newLine();
-                    bw.flush();
-                //Si es false
-                } else {
-                    //Enviamos que no es un numero primo
-                    System.out.println("El servidor le envía la respuesta al cliente");
-                    bw.write("No es un numero primo");
-                    bw.newLine();
-                    bw.flush();
-                }
+                System.out.println("Mensaje enviado por el cliente: " + ruta);
 
 
-                // 5 - Cerrar flujos de lectura y escritura
+
+
+                // 5 - Cerrar flujos de lectura, escritura y conexion
                 br.close();
                 isr.close();
                 bw.close();
@@ -91,5 +86,4 @@ public class ServidorTCP {
             e.printStackTrace();
         }
     }
-
 }
