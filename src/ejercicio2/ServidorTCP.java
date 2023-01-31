@@ -1,4 +1,4 @@
-package lecturaremotadeficheros;
+package ejercicio2;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -6,27 +6,15 @@ import java.net.Socket;
 
 public class ServidorTCP {
 
-    private static String leerArchivo(String rutaFichero) throws IOException {
-        //Creamos la variable que va a almacenar lo que se le enviara al cliente
-        String contenido = "";
+    static int factorial(int num) {
+        //Declaración de variables
+        int total=0;
 
-        //Creamos un tipo File
-        File archivo = new File(rutaFichero);
-
-        //Si el archivo existe
-        if (archivo.exists()){
-            //Leemos el archivo y lo guardamos en una variable
-            BufferedReader br = new BufferedReader(new FileReader(archivo));
-            contenido += br.readLine();
-            br.close();
-        //Si no
-        }else {
-            //Guardamos en la variable que no existe
-            contenido = "El fichero dado no existe";
+        for(int i=num; i>0; i++) {
+            total*=i;
         }
 
-        //Devolvemos la variable
-        return contenido;
+        return total;
     }
 
     public static void main(String[] args) {
@@ -51,24 +39,17 @@ public class ServidorTCP {
                 OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
                 BufferedWriter bw = new BufferedWriter(osw);
 
-                //Guardo el numero enviado en una variable
-                String ruta=br.readLine();
+                System.out.println("Mensaje enviado por el cliente: " + br.read());
 
-                //Mostramos el numero enviado por el cliente
-                System.out.println("Mensaje enviado por el cliente: " + ruta);
+                // Enviarle mensaje al cliente
+                System.out.println("Servidor envía al cliente el mensaje");
 
-                //Guardamos lo que nos devuelve la función leerArchivo
-                String informaciónFichero = leerArchivo(ruta);
-
-                //Mensaje enviado al cliente
-                System.out.println("(Servidor): Envíamos el contenido del archivo al cliente");
-
-                //Enviamos el mensaje al cliente
-                bw.write(informaciónFichero);
+                int total=factorial(Integer.parseInt(br.readLine()));
+                bw.write(total);
                 bw.newLine();
                 bw.flush();
 
-                // 5 - Cerrar flujos de lectura, escritura y conexion
+                // 5 - Cerrar flujos de lectura y escritura
                 br.close();
                 isr.close();
                 bw.close();
@@ -88,4 +69,5 @@ public class ServidorTCP {
             e.printStackTrace();
         }
     }
+
 }
