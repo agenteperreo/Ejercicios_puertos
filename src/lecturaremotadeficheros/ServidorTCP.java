@@ -27,7 +27,7 @@ public class ServidorTCP {
                 bw.flush();
             }
         } catch (FileNotFoundException e) {
-            bw.write("El archivo no se encuentra.");
+            //bw.write("El archivo no se encuentra.");
 
         } catch (IOException e) {
             throw new RuntimeException(e);
