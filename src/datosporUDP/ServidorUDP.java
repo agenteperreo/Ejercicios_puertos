@@ -23,12 +23,15 @@ public class ServidorUDP {
         System.out.println("Creación del datagrama");
         DatagramPacket packetEntrada;
 
-        String nombre="";
+        String nombre = "";
 
         try {
-            while(!nombre.equals("FIN")) {
+            //Escribimos el string en el fichero
+            BufferedWriter bw = new BufferedWriter(new FileWriter("mensajes.txt"));
+
+            while (!nombre.equals("FIN")) {
                 //Inicializamos el buffer de entrada
-                bufferEntrada= new byte[32];
+                bufferEntrada = new byte[32];
 
                 //Reiniciamos el datagrama
                 packetEntrada = new DatagramPacket(bufferEntrada, bufferEntrada.length);
@@ -40,21 +43,20 @@ public class ServidorUDP {
                 nombre = new String(packetEntrada.getData());
 
                 //Escribimos el string en el fichero
-                BufferedWriter bw=new BufferedWriter(new FileWriter("mensajes.txt"));
-
-                //
-                bw.append(nombre);
+                bw.append(nombre.trim() + " ");
             }
+
+            //Cerramos el bufferedWriter
+            bw.close();
+
+            //Mostramos que los mensajes han sido escritos en el fichero
+            System.out.println("Los mensajes del cliente se han almacenado correctamente");
 
         } catch (IOException e) {
             System.err.println("ERROR: Algo se ha interrumpido");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-
-
-
-
     }
 
     public static void main(String[] args) {
@@ -62,6 +64,7 @@ public class ServidorUDP {
             System.out.println("Creación del socket");
             DatagramSocket socket = new DatagramSocket(41600);
 
+            //Llamamos a la funcion indefinidamente
             while (true) {
                 leerMensajes(socket);
             }

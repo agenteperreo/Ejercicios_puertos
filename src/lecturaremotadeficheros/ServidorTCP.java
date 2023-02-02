@@ -1,14 +1,18 @@
 package lecturaremotadeficheros;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class ServidorTCP {
+    static String contenidos[]=new String[20];
 
-    private static String leerArchivo(String rutaFichero) throws IOException {
+    private static void leerArchivo(String rutaFichero) throws IOException {
         //Creamos la variable que va a almacenar lo que se le enviara al cliente
         String contenido = "";
+        int contador=0;
 
         //Creamos un tipo File
         File archivo = new File(rutaFichero);
@@ -17,16 +21,19 @@ public class ServidorTCP {
         if (archivo.exists()){
             //Leemos el archivo y lo guardamos en una variable
             BufferedReader br = new BufferedReader(new FileReader(archivo));
-            contenido += br.readLine();
+            String brRL=br.readLine();
+            while(brRL !=null) {
+                contenidos[contador] = brRL;
+                contador++;
+                brRL=br.readLine();
+            }
+
             br.close();
         //Si no
         }else {
             //Guardamos en la variable que no existe
             contenido = "El fichero dado no existe";
         }
-
-        //Devolvemos la variable
-        return contenido;
     }
 
     public static void main(String[] args) {
@@ -57,16 +64,20 @@ public class ServidorTCP {
                 //Mostramos el numero enviado por el cliente
                 System.out.println("Mensaje enviado por el cliente: " + ruta);
 
-                //Guardamos lo que nos devuelve la función leerArchivo
-                String informaciónFichero = leerArchivo(ruta);
+                //Llamamos a la funcion
+                leerArchivo(ruta);
 
                 //Mensaje enviado al cliente
                 System.out.println("(Servidor): Envíamos el contenido del archivo al cliente");
 
                 //Enviamos el mensaje al cliente
-                bw.write(informaciónFichero);
-                bw.newLine();
-                bw.flush();
+                for(int i=0; i< contenidos.length; i++) {
+                    if(contenidos[i]==null) {
+                        contenidos[i]="";
+                    }
+                    bw.write(contenidos[i].trim());
+                    bw.newLine();
+                }
 
                 // 5 - Cerrar flujos de lectura, escritura y conexion
                 br.close();
