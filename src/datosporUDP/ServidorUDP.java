@@ -43,7 +43,9 @@ public class ServidorUDP {
                 nombre = new String(packetEntrada.getData());
 
                 //Escribimos el string en el fichero
-                bw.append(nombre.trim() + " ");
+                bw.append(nombre.trim());
+
+                bw.newLine();
             }
 
             //Cerramos el bufferedWriter
