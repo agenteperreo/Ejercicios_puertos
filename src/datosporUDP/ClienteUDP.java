@@ -18,36 +18,30 @@ public class ClienteUDP {
         //Creamos el datagrama
         DatagramPacket packet;
         try {
-        //Enviamos el mensaje 10000 veces
-        for (int i=0;  i<10000; i++) {
+            //Enviamos el mensaje 10000 veces
+            for (int i = 0; i < 10000; i++) {
 
-            //Generamos el mensaje
-            mensaje = "Mensaje: " + i;
-            bufferSalida = mensaje.getBytes();
-            packet = new DatagramPacket(bufferSalida, bufferSalida.length, ip, 41600);
+                //Generamos el mensaje
+                mensaje = "Mensaje: " + i;
+                bufferSalida = mensaje.getBytes();
+                packet = new DatagramPacket(bufferSalida, bufferSalida.length, ip, 41600);
 
-            //Enviamos el paquete
-            System.out.println("Enviamos el mensaje: "+mensaje);
+                //Enviamos el paquete
+                System.out.println("Enviamos el mensaje: " + mensaje);
 
-            //Enviamos el mensaje
-            socket.send(packet);
-        }
+                //Enviamos el mensaje
+                socket.send(packet);
+            }
 
-            //Damos valor al ultimo mensaje
-            mensaje="FIN";
-            bufferSalida=mensaje.getBytes();
+            //Mostramos que ya se ha terminado el envio
+            System.out.println("FIN");
 
-            packet = new DatagramPacket(bufferSalida, bufferSalida.length, ip, 41600);
-
-            //Enviamos el paquete
-            System.out.println("Enviamos el paquete");
-            socket.send(packet);
-        //Control de excepciones
+            //Control de excepciones
         } catch (IOException e) {
-        System.err.println("ERROR: Error en el envio del paquete");
-        System.out.println(e.getMessage());
-        e.printStackTrace();
-    }
+            System.err.println("ERROR: Error en el envio del paquete");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
@@ -57,7 +51,7 @@ public class ClienteUDP {
 
             //Creamos el socket
             System.out.println("Creación del socket.");
-            DatagramSocket socket=new DatagramSocket();
+            DatagramSocket socket = new DatagramSocket();
 
             //Llamamos a la funcion
             envioMensajes(socket, ip);
