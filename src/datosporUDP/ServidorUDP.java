@@ -1,6 +1,5 @@
 package datosporUDP;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,6 +45,9 @@ public class ServidorUDP {
                 bw.append(nombre.trim());
 
                 bw.newLine();
+                bw.flush();
+
+
             }
 
             //Cerramos el bufferedWriter
@@ -66,16 +68,11 @@ public class ServidorUDP {
             System.out.println("Creación del socket");
             DatagramSocket socket = new DatagramSocket(41600);
 
-            //Llamamos a la funcion indefinidamente
-            while (true) {
-                leerMensajes(socket);
-            }
+            //Llamamos a la funcion
+            leerMensajes(socket);
 
         } catch (SocketException e) {
             System.err.println("Error en la creacion del socket.");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("Error en la recepcion del paquete.");
             e.printStackTrace();
         }
     }
