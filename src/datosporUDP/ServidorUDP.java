@@ -28,7 +28,7 @@ public class ServidorUDP {
             //Escribimos el string en el fichero
             BufferedWriter bw = new BufferedWriter(new FileWriter("mensajes.txt"));
 
-            while (!nombre.equals("Mensaje: 9999")) {
+            while (!nombre.equals("FIN")) {
                 //Inicializamos el buffer de entrada
                 bufferEntrada = new byte[32];
 
