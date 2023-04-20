@@ -28,7 +28,7 @@ public class ServidorUDP {
             //Escribimos el string en el fichero
             BufferedWriter bw = new BufferedWriter(new FileWriter("mensajes.txt"));
 
-            while (!nombre.equals("FIN")) {
+            while (!nombre.trim().equals("FIN")) {
                 //Inicializamos el buffer de entrada
                 bufferEntrada = new byte[32];
 
@@ -41,10 +41,19 @@ public class ServidorUDP {
                 //Leemos el mensaje y lo transformamos a String
                 nombre = new String(packetEntrada.getData());
 
-                //Escribimos el string en el fichero
-                bw.append(nombre.trim());
+                //Si el mensaje no es FIN
+                if(!nombre.trim().equals("FIN")) {
+                    //Guardamos el numero de mensaje
+                    String numero = nombre.split(" ")[1].trim();
 
+                    //Escribimos el string en el fichero
+                    bw.append(numero);
+                }
+
+                //Pasamos de linea
                 bw.newLine();
+
+                //Limpiamos el buffered
                 bw.flush();
 
 

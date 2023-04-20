@@ -33,8 +33,19 @@ public class ClienteUDP {
                 socket.send(packet);
             }
 
-            //Mostramos que ya se ha terminado el envio
-            System.out.println("FIN");
+            //Cambiamos el mensaje a FIN
+            mensaje="FIN";
+
+            //Lo guardamos en el array de bytes
+            bufferSalida = mensaje.getBytes();
+
+            //Creamos el packet a enviar
+            packet = new DatagramPacket(bufferSalida, bufferSalida.length, ip, 41600);
+
+            //Enviamos el packet
+            socket.send(packet);
+
+            System.out.println(mensaje);
 
             //Control de excepciones
         } catch (IOException e) {
